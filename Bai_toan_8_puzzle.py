@@ -31,16 +31,18 @@ TITLE_COLOR = (50, 80, 120)
 HIGHLIGHT_COLOR = (255, 213, 79)
 STATUS_BG = (245, 246, 250, 200)
 
-# Trạng thái ban đầu và mục tiêu
+# status 3
 # start_state = (
 #     (1, 2, 3),
 #     (4, 0, 6),
 #     (7, 5, 8)
 # )
+
+# status 1 + 2
 start_state = (
-    (2, 1, 3),
-    (4, 8, 7),
-    (5, 0, 6)
+    (1, 2, 3),
+    (4, 0, 6),
+    (7, 5, 8)
 )
 goal_state = (
     (1, 2, 3),
@@ -56,6 +58,8 @@ tile_font = pygame.font.Font(None, 72)
 status_font = pygame.font.Font(None, 28)
 
 # Hàm tiện ích
+
+
 def is_solvable(start):
     flat = [num for row in start for num in row if num != 0]
     inversions = sum(flat[i] > flat[j] for i in range(len(flat)) for j in range(i + 1, len(flat)))
@@ -215,28 +219,39 @@ def ida_star(start, goal):
             return None
         bound = t
 
+# def flatten(state):
+#     return [tile for row in state for tile in row]
+#
+# def unflatten(state):
+#     return [state[i:i + 3] for i in range(0, 9, 3)]
+def flatten(state):
+    return [num for row in state for num in row]
+
+# Chuyển list 1 chiều thành ma trận 3x3
+def unflatten(lst):
+    return tuple(tuple(lst[i*3:(i+1)*3]) for i in range(3))
+
+def fitness(state, goal):
+    return -manhattan_distance(state, goal)
 def genetic_algorithm(start, goal, population_size=50, generations=200):
-    def flatten(state):
-        return [num for row in state for num in row]
-
-    def unflatten(lst):
-        return tuple(tuple(lst[i*3:(i+1)*3]) for i in range(3))
-
-    def fitness(state):
-        return -manhattan_distance(state, goal)
-
     population = [start for _ in range(population_size)]
+
     for _ in range(generations):
-        population.sort(key=fitness, reverse=True)
-        if fitness(population[0]) == 0:
+        population.sort(key=lambda state: fitness(state, goal), reverse=True)
+
+        # Nếu tìm thấy trạng thái đúng thì trả kết quả luôn
+        if fitness(population[0], goal) == 0:
             return [population[0]]
-        next_gen = population[:10]
+
+        next_gen = population[:10]  # chọn elite
         while len(next_gen) < population_size:
             parent1, parent2 = random.sample(population[:20], 2)
             child = crossover(parent1, parent2)
             child = mutate(child)
             next_gen.append(child)
+
         population = next_gen
+
     best = population[0]
     return bfs(start, best) if best != goal else [best]
 
@@ -562,13 +577,13 @@ def draw_algorithm_status(screen, algorithm_name, steps=None, elapsed_time=None)
     status_surface = pygame.Surface((300, 100), pygame.SRCALPHA)
     status_surface.fill((245, 246, 250, 200))
     pygame.draw.rect(status_surface, (220, 230, 240, 200), (0, 0, 300, 100), 1, border_radius=10)
-    title_text = status_font.render(f"Thuật toán: {algorithm_name}", True, TITLE_COLOR)
+    title_text = status_font.render(f"Algorithm: {algorithm_name}", True, TITLE_COLOR)
     status_surface.blit(title_text, (15, 15))
     if steps is not None:
-        steps_text = status_font.render(f"Bước: {steps}", True, DARK_TEXT)
+        steps_text = status_font.render(f"Step: {steps}", True, DARK_TEXT)
         status_surface.blit(steps_text, (15, 45))
     if elapsed_time is not None:
-        time_text = status_font.render(f"Thời gian: {elapsed_time:.2f}s", True, DARK_TEXT)
+        time_text = status_font.render(f"Time: {elapsed_time:.2f}s", True, DARK_TEXT)
         status_surface.blit(time_text, (15, 70))
     screen.blit(status_surface, (20, 20))
 
@@ -612,46 +627,46 @@ def solve_puzzle(algorithm, start_state, goal_state):
     start_time = time.time()
     if algorithm == "BFS":
         solution = bfs(start_state, goal_state)
-        algorithm_name = "Tìm kiếm theo chiều rộng (BFS)"
+        algorithm_name = "BFS"
     elif algorithm == "DFS":
         solution = dfs(start_state, goal_state)
-        algorithm_name = "Tìm kiếm theo chiều sâu (DFS)"
+        algorithm_name = "DFS"
     elif algorithm == "Iterative Deepening":
         solution = iterative_deepening_search(start_state, goal_state)
-        algorithm_name = "Tìm kiếm sâu dần"
+        algorithm_name = "Iterative Deepening Search"
     elif algorithm == "Uniform Cost":
         solution = uniform_cost_search(start_state, goal_state)
-        algorithm_name = "Tìm kiếm chi phí đồng nhất"
+        algorithm_name = "Uniform Cost Search"
     elif algorithm == "A*":
         solution = a_star(start_state, goal_state)
-        algorithm_name = "Tìm kiếm A*"
+        algorithm_name = " A* Algorithm"
     elif algorithm == "Greedy":
         solution = greedy_search(start_state, goal_state)
-        algorithm_name = "Tìm kiếm tham lam"
+        algorithm_name = "Greedy Algorithm"
     elif algorithm == "IDA*":
         solution = ida_star(start_state, goal_state)
-        algorithm_name = "Tìm kiếm A* sâu dần (IDA*)"
+        algorithm_name = "Iterative Deepening Search"
     elif algorithm == "Genetic":
         solution = genetic_algorithm(start_state, goal_state)
-        algorithm_name = "Thuật toán di truyền"
+        algorithm_name = "Genetic Algorithm"
     elif algorithm == "Local Beam":
         solution = local_beam_search(start_state, goal_state)
-        algorithm_name = "Tìm kiếm chùm cục bộ"
+        algorithm_name = "Local Beam Search"
     elif algorithm == "Simple Hill Climbing":
         solution = simple_hill_climbing(start_state, goal_state)
         algorithm_name = "Leo đồi đơn giản"
     elif algorithm == "Stochastic Hill Climbing":
         solution = stochastic_hill_climbing(start_state, goal_state)
-        algorithm_name = "Leo đồi ngẫu nhiên"
+        algorithm_name = "Stochastic Hill Climbing"
     elif algorithm == "Simulated Annealing":
         solution = simulated_annealing(start_state, goal_state)
-        algorithm_name = "Ủ nhiệt mô phỏng"
+        algorithm_name = "Simulated Annealing Algorithm"
     elif algorithm == "Steepest Ascent Hill Climbing":
         solution = steepest_ascent_hill_climbing(start_state, goal_state)
-        algorithm_name = "Leo đồi dốc nhất"
+        algorithm_name = "Steepest Ascent Hill Climbing "
     elif algorithm == "Q-Learning":
         solution = q_learning_solve(start_state, goal_state)
-        algorithm_name = "Học Q"
+        algorithm_name = "Q-learning"
     elif algorithm == "SARSA":
         solution = sarsa_solve(start_state, goal_state)
         algorithm_name = "SARSA"
@@ -660,33 +675,33 @@ def solve_puzzle(algorithm, start_state, goal_state):
         algorithm_name = "Mạng Q sâu"
     elif algorithm == "Policy Gradient":
         solution = policy_gradient(start_state, goal_state)
-        algorithm_name = "Gradient chính sách"
+        algorithm_name = "Policy Gradient Algorithm"
     elif algorithm == "Backtracking":
         solution = backtracking(start_state, goal_state)
-        algorithm_name = "Quay lui"
+        algorithm_name = "BackTracking Algorithm"
     elif algorithm == "Min-Conflicts":
         solution = min_conflicts(start_state, goal_state)
-        algorithm_name = "Xung đột tối thiểu"
+        algorithm_name = "Min-Conflicts Algorithm"
     elif algorithm == "Forward Checking":
         solution = forward_checking(start_state, goal_state)
-        algorithm_name = "Kiểm tra tiến"
+        algorithm_name = "Forward Checking Algorithm"
     elif algorithm == "AND-OR":
         solution = and_or_search(start_state, goal_state)
-        algorithm_name = "Tìm kiếm AND-OR"
+        algorithm_name = "AND-OR search"
     elif algorithm == "Belief State":
         solution = belief_state_search(start_state, goal_state)
-        algorithm_name = "Tìm kiếm trạng thái niềm tin"
+        algorithm_name = "Belief State search"
     elif algorithm == "Partial Observation":
         solution = search_with_partial_observation(start_state, goal_state)
-        algorithm_name = "Tìm kiếm với quan sát từng phần"
+        algorithm_name = "Partial Observation search"
     else:
-        return None, "Thuật toán không xác định", 0
+        return None, "Unknown Search", 0
     elapsed_time = time.time() - start_time
     return solution, algorithm_name, elapsed_time
 
 async def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Giải 8-Puzzle")
+    pygame.display.set_caption("Solve 8-Puzzle")
     clock = pygame.time.Clock()
 
     current_state = start_state
@@ -701,15 +716,15 @@ async def main():
     elapsed_time = None
     solving = False
     spinner_angle = 0
-    message = "Nhấn nút để giải hoặc di chuyển ô"
+    message = "Press button to solve or remove"
     message_timer = 0
     tiles_movable = True
     show_algorithm_menu = False
 
     menu_buttons = [
-        Button(WIDTH // 2 - 150, HEIGHT - 60, 100, 40, "Đặt lại"),
-        Button(WIDTH // 2 - 40, HEIGHT - 60, 100, 40, "Ngẫu nhiên"),
-        Button(WIDTH // 2 + 70, HEIGHT - 60, 80, 40, "Giải", (40, 180, 99))
+        Button(WIDTH // 2 - 150, HEIGHT - 60, 100, 40, "Reset"),
+        Button(WIDTH // 2 - 40, HEIGHT - 60, 100, 40, "Random"),
+        Button(WIDTH // 2 + 70, HEIGHT - 60, 80, 40, "Solve", (40, 180, 99))
     ]
     algorithm_buttons = [
         Button(20, 150, 200, 35, "BFS"),
@@ -737,7 +752,7 @@ async def main():
         Button(WIDTH - 220, 430, 200, 35, "Partial Observation"),
         Button(WIDTH - 220, 470, 200, 35, "Thủ công", (40, 180, 99))
     ]
-    close_button = Button(WIDTH // 2 - 40, HEIGHT - 60, 80, 40, "Đóng", (180, 70, 70))
+    close_button = Button(WIDTH // 2 - 40, HEIGHT - 60, 80, 40, "Close", (180, 70, 70))
     buttons = menu_buttons
 
     while True:
@@ -749,24 +764,24 @@ async def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for button in buttons:
                     if button.is_clicked(event.pos):
-                        if button.text == "Đặt lại":
+                        if button.text == "Reset":
                             current_state = start_state
                             prev_state = None
                             solution = None
-                            message = "Đặt lại trạng thái ban đầu"
+                            message = "Status start"
                             message_timer = 3
                             tiles_movable = True
-                        elif button.text == "Ngẫu nhiên":
+                        elif button.text == "Random":
                             current_state = generate_random_state()
                             prev_state = None
                             solution = None
-                            message = "Tạo trạng thái ngẫu nhiên"
+                            message = "Status random"
                             message_timer = 3
                             tiles_movable = True
-                        elif button.text == "Giải":
+                        elif button.text == "Solve":
                             show_algorithm_menu = True
                             buttons = algorithm_buttons + [close_button]
-                        elif button.text == "Đóng":
+                        elif button.text == "Close":
                             show_algorithm_menu = False
                             buttons = menu_buttons
                         elif button.text == "Thủ công":
@@ -774,7 +789,7 @@ async def main():
                             buttons = menu_buttons
                             tiles_movable = True
                             solution = None
-                            message = "Giải puzzle thủ công"
+                            message = "Solve puzzle thủ công"
                             message_timer = 3
                         elif not solving and button.text in ["BFS", "DFS", "Iterative Deepening", "Uniform Cost", "A*", "Greedy", "IDA*", "Genetic", "Local Beam", "Simple Hill Climbing", "Stochastic Hill Climbing", "Simulated Annealing", "Steepest Ascent Hill Climbing", "Q-Learning", "SARSA", "Deep Q-Network", "Policy Gradient", "Backtracking", "Min-Conflicts", "Forward Checking", "AND-OR", "Belief State", "Partial Observation"]:
                             if not is_solvable(current_state):
@@ -786,12 +801,12 @@ async def main():
                                 buttons = menu_buttons
                                 tiles_movable = False
                                 algorithm = button.text
-                                message = f"Đang giải bằng {algorithm}..."
+                                message = f" Waiting {algorithm}..."
                                 solution, algorithm_name, elapsed_time = solve_puzzle(algorithm, current_state, goal_state)
                                 solving = False
                                 solution_index = 0
                                 solution_timer = 0
-                                message = "Tìm thấy lời giải!" if solution else "Không tìm thấy lời giải"
+                                message = "Find the method!" if solution else "No find the method"
                                 message_timer = 3
                 if tiles_movable and not show_algorithm_menu:
                     new_state, moved = handle_tile_click(current_state, event.pos[0], event.pos[1])
@@ -800,7 +815,7 @@ async def main():
                         current_state = new_state
                         animation_progress = 0.0
                         if current_state == goal_state:
-                            message = "Chúc mừng! Đã giải xong!"
+                            message = "Congratulate!"
                             message_timer = 5
 
         if animation_progress < 1.0:
@@ -817,7 +832,7 @@ async def main():
                 current_state = solution[solution_index]
                 animation_progress = 0.0
                 if solution_index == len(solution) - 1:
-                    message = "Hoàn thành lời giải!"
+                    message = "Success !"
                     message_timer = 5
 
         if message_timer > 0:
@@ -827,7 +842,7 @@ async def main():
             button.update(mouse_pos)
 
         screen.fill(BACKGROUND)
-        title_text = title_font.render("Giải 8-Puzzle", True, TITLE_COLOR)
+        title_text = title_font.render("Solve 8-Puzzle", True, TITLE_COLOR)
         screen.blit(title_text, (WIDTH // 2 - title_text.get_width() // 2, 50))
         draw_board(screen, current_state, animation_progress, prev_state)
         if solution and not solving:
@@ -842,7 +857,7 @@ async def main():
             overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
             overlay.fill((0, 0, 0, 150))
             screen.blit(overlay, (0, 0))
-            menu_title = title_font.render("Chọn thuật toán", True, (255, 255, 255))
+            menu_title = title_font.render("Choose Algorithms", True, (255, 255, 255))
             screen.blit(menu_title, (WIDTH // 2 - menu_title.get_width() // 2, 90))
             for button in buttons:
                 button.draw(screen)
