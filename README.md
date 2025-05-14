@@ -28,7 +28,8 @@ BFS là thuật toán duyệt đồ thị hoặc cây theo chiều rộng, tức
 + Cấu trúc dữ liệu sử dụng trong BFS
   - Hàng đợi(Queue): dùng để lưu các đỉnh cần duyệt tiếp theo.
   - Tập hợp hoặc đánh dấu (visited): để tránh duyệt lại đỉnh đã thăm.
-    (gif/BFS.gif)
+  
+![Nhóm 1](gif/nhom1.gif)
   
 ### 2.1.2. DFS
 DFS là thuật toán duyệt đồ thị hoặc cây theo chiều sâu – tức là nó sẽ đi sâu theo từng nhánh trước khi quay lại và duyệt các nhánh còn lại.
