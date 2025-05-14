@@ -30,7 +30,7 @@ BFS là thuật toán duyệt đồ thị hoặc cây theo chiều rộng, tức
   - Tập hợp hoặc đánh dấu (visited): để tránh duyệt lại đỉnh đã thăm.
 + Hình ảnh minh họa: 
   
-![Nhóm 1](gif/BFS.gif)
+![Nhóm 1](GIF1/1/BFS.gif)
   
 ### 2.1.2. DFS
 DFS là thuật toán duyệt đồ thị hoặc cây theo chiều sâu – tức là nó sẽ đi sâu theo từng nhánh trước khi quay lại và duyệt các nhánh còn lại.
@@ -39,6 +39,9 @@ DFS là thuật toán duyệt đồ thị hoặc cây theo chiều sâu – tứ
   - Tập hợp các visited để tránh lặp vô hạn (đặc biệt trong đồ thị có chu trình), cần lưu lại các đỉnh đã thăm:
       - Set (tập hợp): Dễ sử dụng, truy cập nhanh O(1)
       - Mảng đánh dấu (boolean array): Dùng khi đỉnh là số nguyên (0 → n-1)
++ Hình ảnh minh họa:
+  
+  ![Nhóm 1](GIF1/1/DFS.gif)
         
 ### 2.1.3. IDS (Iterative Deepening Search)
 IDS (Iterative Deepening Search – Tìm kiếm mở rộng lặp) là sự kết hợp giữa DFS và BFS. Nó thực hiện nhiều lần DFS với độ sâu giới hạn, tăng dần theo từng bước.
@@ -47,6 +50,11 @@ IDS (Iterative Deepening Search – Tìm kiếm mở rộng lặp) là sự kế
   - Call Stack (ngăn xếp hàm): khi dùng DFS đệ quy trong mỗi vòng lặp giới hạn độ sâu
   - Tập hợp/array đánh dấu (visited): giúp tránh lặp đỉnh (nếu cần) – thường dùng trong đồ thị
   - Vòng lặp ngoài (for depth in range(...)): kiểm soát giới hạn độ sâu của DFS
++ Hình ảnh minh họa:
+
+    ![Nhóm 1](GIF1/1/IDS.gif)
+
+  
     
 ### 2.1.4. UCS (Uniform-Cost Search)
 UCS (Uniform Cost Search – Tìm kiếm theo chi phí đồng nhất) là một thuật toán tìm kiếm trên đồ thị/cây giống như BFS, nhưng thay vì duyệt theo mức, nó duyệt theo chi phí đường đi nhỏ nhất từ gốc đến đỉnh hiện tại.
