@@ -64,11 +64,14 @@ UCS (Uniform Cost Search – Tìm kiếm theo chi phí đồng nhất) là một
   - Danh sách kề: biểu diễn đồ thị và chi phí cạnh giữa các đỉnh
   - Tuple (chi phí, đỉnh): gói thông tin cần thiết cho priority queue
 
++ Hình ảnh minh họa:
+   ![Nhóm 1](GIF1/1/UCS.gif)
+
 ## 2.2. Nhóm thuật toán tìm kiếm có thông tin (Informed Search Algorithms)
 Các thành phần chính của bài toán tìm kiếm và giải pháp
 
 + Trạng thái ban đầu
-    - Một lưới 3x3 với 8 số từ 1 đến 8 và một ô trống (0), đại diện cho trạng thái khởi đầu của bài toán ([[1 2 3], [4 0 6], [7 5 8]]).
+    - Một lưới 3x3 với 8 số từ 1 đến 8 và một ô trống (0), đại diện cho trạng thái khởi đầu của bài toán ([[5 2 1], [7 0 6], [3 4 8]]).
 + Trạng thái mục tiêu
     - Lưới 3x3 với thứ tự số từ 1 đến 8 và ô trống ở vị trí cuối cùng ([[1 2 3], [4 5 6], [7 8 0]]).
 + Không gian trạng thái
@@ -94,6 +97,7 @@ A* dùng 1 hàm chi phí đánh giá tổng quát:
   - Bản đồ cha (came_from) (dict): dùng để truy vết đường đi sau khi tìm xong.
   - g_score (dict): lưu chi phí thực từ start đến từng nút.
 + Hình ảnh minh họa:
+   ![Nhóm 1](GIF1/2/A_start.gif)
   
 ### 2.2.2. Greedy
 Thuật toán Greedy (Tham lam) là một chiến lược giải bài toán bằng cách luôn chọn lựa phương án tối ưu nhất tại mỗi bước với hy vọng rằng tổng thể cũng sẽ là tối ưu.
@@ -102,6 +106,7 @@ Thuật toán Greedy (Tham lam) là một chiến lược giải bài toán bằ
   - Sắp xếp (Sorting): Greedy thường bắt đầu bằng việc sắp xếp theo một tiêu chí (ví dụ: lợi nhuận, trọng lượng,...).
   - Priority Queue: Một số bài toán cần truy xuất phần tử tốt nhất nhiều lần.
 + Hình ảnh minh họa:
+   ![Nhóm 1](GIF1/2/Greedy.gif)
   
 ### 2.2.3. IDA*
 IDA* (Iterative Deepening A*) là một thuật toán kết hợp giữa: DFS (Depth-First Search) – để giảm bộ nhớ, A* – để đảm bảo tìm kiếm theo hướng heuristic. Nó thường dùng cho các bài toán có không gian trạng thái lớn như 8-puzzle, 15-puzzle, Rubik’s cube, nơi A* tốn quá nhiều bộ nhớ vì lưu toàn bộ cây tìm kiếm.
@@ -109,7 +114,8 @@ IDA* (Iterative Deepening A*) là một thuật toán kết hợp giữa: DFS (D
   - Stack (hệ thống gọi đệ quy): để thực hiện DFS.
   - Hàm heuristic h(n): thường là: Khoảng cách Manhattan (cho 8-puzzle) và Hamming distance.
   - Visited path (tạm thời): để tránh quay lui trong DFS.
-+ Hình ảnh minh hoa:
++ Hình ảnh minh họa:
+   ![Nhóm 1](GIF1/2/IDA_start.gif)
 
 
 
@@ -117,7 +123,7 @@ IDA* (Iterative Deepening A*) là một thuật toán kết hợp giữa: DFS (D
 Các thành phần chính của bài toán tìm kiếm và giải pháp
 
 + Trạng thái ban đầu
-    - Một lưới 3x3 với 8 số từ 1 đến 8 và một ô trống (0), đại diện cho trạng thái khởi đầu của bài toán ([[1 2 3], [4 0 5], [7 5 8]]).
+    - Một lưới 3x3 với 8 số từ 1 đến 8 và một ô trống (0), đại diện cho trạng thái khởi đầu của bài toán ([[1 2 3], [4 0 6], [7 5 8]]).
 + Trạng thái mục tiêu
     - Lưới 3x3 với thứ tự số từ 1 đến 8 và ô trống ở vị trí cuối cùng ([[1 2 3], [4 5 6], [7 8 0]]).
 + Không gian trạng thái
@@ -136,6 +142,7 @@ Hill Climbing là một thuật toán tìm kiếm theo hướng (heuristic). Nó
   - Heuristic function (h(n)): đánh giá "độ tốt" của trạng thái.
   - Neighbor generator: sinh trạng thái lân cận.
 + Hình ảnh minh họa:
+   ![Nhóm 1](GIF1/3/simple.gif)
 ### 2.5.2. Steepest-Ascent hill climbing
 Steepest-Ascent Hill Climbing là phiên bản cải tiến của Simple Hill Climbing. Thay vì chỉ chọn một hàng xóm bất kỳ tốt hơn trạng thái hiện tại, thuật toán xét tất cả các hàng xóm và chọn hàng xóm tốt nhất (tức có giá trị heuristic cao nhất – hoặc thấp nhất nếu đang tìm giá trị nhỏ nhất).
 + Cấu trúc dữ liệu của Steepest-Ascent hill climbing:
@@ -143,6 +150,7 @@ Steepest-Ascent Hill Climbing là phiên bản cải tiến của Simple Hill Cl
   - Heuristic function h(n): đánh giá "độ tốt" của một trạng thái.
   - List of neighbors: để duyệt tất cả hàng xóm.
 + Hình ảnh minh họa:
+   ![Nhóm 1](GIF1/3/steepest.gif)
 ### 2.5.3. Beam search
 Beam Search là một thuật toán tìm kiếm heuristic giống như BFS kết hợp với A*, nhưng giới hạn số lượng nhánh được mở rộng tại mỗi bước để tiết kiệm tài nguyên.
 + Cấu trúc dữ liệu sử dụng trong Beam search
@@ -151,6 +159,7 @@ Beam Search là một thuật toán tìm kiếm heuristic giống như BFS kết
   - Hàm heuristic h(n) – đánh giá độ tốt của trạng thái.
   - Beam width (k) – số trạng thái tốt nhất giữ lại ở mỗi bước.
 + Hình ảnh minh họa:
+   ![Nhóm 1](GIF1/3/localbeam.gif)
 ### 2.5.4. Stochastic hill climbing
 Stochastic Hill Climbing là một biến thể của thuật toán hill climbing, trong đó không chọn luôn hàng xóm tốt nhất, mà chọn ngẫu nhiên một hàng xóm tốt hơn hiện tại. Điều này giúp tránh bị kẹt trong local maximum và vùng plateau.
 + Cấu trúc dữ liệu sử dụng trong Stochastic hill climbing
@@ -159,6 +168,7 @@ Stochastic Hill Climbing là một biến thể của thuật toán hill climbin
   - Danh sách các hàng xóm: để chọn ra hàng xóm tốt hơn.
   - random.choice(): chọn ngẫu nhiên 1 hàng xóm tốt.
 + Hình ảnh minh họa:
+   ![Nhóm 1](GIF1/3/stichastic.gif)
 
 ## 2.4. Nhóm thuật toán tìm kiếm trong môi trường phức tạp (Search in complex environments)
 Các thành phần chính của bài toán tìm kiếm và giải pháp
@@ -185,6 +195,8 @@ Search with No Observation (Tìm kiếm không quan sát) là một dạng tìm 
   - goal_test: Kiểm tra belief state đạt đích
 + Hình ảnh minh họa:
 
+   ![Nhóm 1](GIF1/4/belief.gif)
+
 
 ### 2.4.2. Search with partically observation
 Thuật toán Search with partially observable (Tìm kiếm với quan sát một phần) được sử dụng trong các bài toán trong đó tác nhân (agent) không thể quan sát toàn bộ trạng thái của môi trường. Thay vào đó, tác nhân chỉ có thể quan sát một phần của môi trường, điều này dẫn đến các vấn đề về không đầy đủ thông tin. Thuật toán này thường được áp dụng trong các trò chơi, robot tự hành, hoặc các hệ thống thông minh nơi tác nhân phải đưa ra quyết định dựa trên thông tin hạn chế.
@@ -196,12 +208,14 @@ Thuật toán Search with partially observable (Tìm kiếm với quan sát mộ
   - HashMap hoặc Dict: Lưu trữ các trạng thái hoặc kết quả trung gian trong quá trình tìm kiếm, hỗ trợ tra cứu nhanh.
 + Hình ảnh minh họa:
 
+   ![Nhóm 1](GIF1/4/partically.gif)
+
 
 ## 2.5. Nhóm thuật toán tìm kiếm thỏa ràng buộc (Constraint Satisfaction Problem)
 Các thành phần chính của bài toán tìm kiếm và giải pháp
 
 + Trạng thái ban đầu
-    - Một lưới 3x3 với 8 số từ 1 đến 8 và một ô trống (0), đại diện cho trạng thái khởi đầu của bài toán ([[1 2 3], [4 0 5], [7 5 8]]).
+    - Một lưới 3x3 với 8 số từ 1 đến 8 và một ô trống (0), đại diện cho trạng thái khởi đầu của bài toán ([[1 2 3], [4 0 6], [7 5 8]]).
 + Trạng thái mục tiêu
     - Lưới 3x3 với thứ tự số từ 1 đến 8 và ô trống ở vị trí cuối cùng ([[1 2 3], [4 5 6], [7 8 0]]).
 + Không gian trạng thái
@@ -219,6 +233,8 @@ Backtracking là một kỹ thuật giải quyết bài toán dựa trên phươ
   - Stack: Dùng để theo dõi các trạng thái trong quá trình thử nghiệm và quay lại. Stack lưu trữ các quyết định đã thực hiện.
   - Set hoặc HashSet: Để kiểm tra các điều kiện ràng buộc (chẳng hạn, kiểm tra sự trùng lặp của các quyết định).
 + Hình ảnh minh họa:
+
+   ![Nhóm 1](GIF1/5/backtracking.gif)
 ### 2.5.2. Min-conflicts
 Min-conflicts là một thuật toán tìm kiếm heuristic, thường được sử dụng để giải quyết các bài toán tối ưu hóa, đặc biệt là trong các bài toán có ràng buộc, như bài toán n-Queens hoặc sắp xếp lịch. Ý tưởng chính của thuật toán Min-conflicts là tìm cách giảm số lượng "xung đột" (conflicts) trong mỗi bước, thay vì tìm kiếm tất cả các trạng thái hoặc thử tất cả các khả năng. Thuật toán này có thể được coi là một phương pháp local search, tập trung vào việc cải thiện dần dần bằng cách di chuyển đến các trạng thái với ít xung đột hơn.
 + Cấu trúc dữ liệu sử dụng trong Min-Conflicts
@@ -226,6 +242,8 @@ Min-conflicts là một thuật toán tìm kiếm heuristic, thường được 
   - Set hoặc Dictionary: Dùng để theo dõi các xung đột trong quá trình tìm kiếm.
   - Heuristic Function: Để đánh giá xung đột, có thể sử dụng hàm tính toán số lượng xung đột trong mỗi bước.
 + Hình ảnh minh họa:
+
+  ![Nhóm 1](GIF1/5/checking.gif)
 ### 2.5.3. Forward checking
 Forward Checking là một kỹ thuật được sử dụng trong giải quyết các bài toán có ràng buộc (constraint satisfaction problems - CSPs), như bài toán đổ màu đồ thị, Sudoku, và các bài toán lập lịch. Kỹ thuật này giúp tăng hiệu quả của thuật toán bằng cách kiểm tra các ràng buộc ngay khi lựa chọn một giá trị cho biến, thay vì đợi đến khi toàn bộ giải pháp được xây dựng.
 + Cấu trúc dữ liệu sử dụng trong Forward checking
@@ -235,11 +253,13 @@ Forward Checking là một kỹ thuật được sử dụng trong giải quyế
   - Stack/Recursion	: Hỗ trợ quay lui (backtrack) khi cần
 + Hình ảnh minh họa:
 
+  ![Nhóm 1](GIF1/5/conflict.gif)
+
 ## 2.6. Nhóm thuật toán học tăng cường (Reinforcement Learning)
 Các thành phần chính của bài toán tìm kiếm và giải pháp
 
 + Trạng thái ban đầu
-    - Một lưới 3x3 với 8 số từ 1 đến 8 và một ô trống (0), đại diện cho trạng thái khởi đầu của bài toán ([[1 2 3], [4 0 5], [7 5 8]]).
+    - Một lưới 3x3 với 8 số từ 1 đến 8 và một ô trống (0), đại diện cho trạng thái khởi đầu của bài toán ([[1 2 3], [4 0 6], [7 5 8]]).
 + Trạng thái mục tiêu
     - Lưới 3x3 với thứ tự số từ 1 đến 8 và ô trống ở vị trí cuối cùng ([[1 2 3], [4 5 6], [7 8 0]]).
 + Không gian trạng thái
@@ -258,6 +278,8 @@ Q-Learning là một thuật toán học tăng cường (Reinforcement Learning)
   - Tuple: Dùng làm khóa (s, a) nếu Q-table là từ điển
   - Random	: Dùng để chọn hành động ngẫu nhiên (exploration)
 + Hình ảnh minh họa
+
+  ![Nhóm 1](GIF1/6/qlearning.gif)
 ### 2.6.2. SARSA
 SARSA (State–Action–Reward–State–Action) là một thuật toán học tăng cường (Reinforcement Learning) có mô hình chính sách (on-policy), dùng để học chính sách tối ưu thông qua tương tác với môi trường. Nó tương tự Q-learning, nhưng khác ở cách cập nhật giá trị Q.
 + Cấu trúc dữ liệu sử dụng
@@ -266,6 +288,8 @@ SARSA (State–Action–Reward–State–Action) là một thuật toán học t
   - List/Set: Danh sách trạng thái và hành động hợp lệ
   - Random: Chọn hành động ngẫu nhiên (ε-greedy exploration)
 + Hình ảnh minh họa
+
+  ![Nhóm 1](GIF1/6/sarsa.gif)
 ### 2.6.3. Deep Q-Network
 Deep Q-Network (DQN) là một phiên bản mở rộng của Q-Learning dùng mạng nơ-ron sâu (Deep Neural Network) để xấp xỉ hàm Q(s, a) thay vì dùng bảng Q-table như trong Q-Learning cổ điển.
 + Cấu trúc dữ liệu sử dụng trong Deep Q-Network
@@ -275,6 +299,7 @@ Deep Q-Network (DQN) là một phiên bản mở rộng của Q-Learning dùng m
   - Target Network: Bản sao của mạng Q hiện tại, cập nhật chậm hơn để ổn định học
   - Mini-batch: Lấy ngẫu nhiên từ replay buffer để cập nhật gradient
 + Hình ảnh minh họa
+  ![Nhóm 1](GIF1/6/qnetwork.gif)
 ### 2.6.4. Policy-gradient
 Policy Gradient là một nhóm thuật toán trong Học tăng cường (Reinforcement Learning) nhằm tối ưu trực tiếp chính sách hành động (policy) thông qua gradient ascent. Thay vì ước lượng hàm giá trị 𝑄(𝑠,𝑎) như Q-learning hay DQN, Policy Gradient học một hàm xác suất chọn hành động 𝜋(𝑎∣𝑠;𝜃) .
 + Cấu trúc dữ liệu sử dụng trong Policy-gradient
@@ -284,6 +309,8 @@ Policy Gradient là một nhóm thuật toán trong Học tăng cường (Reinfo
   - Replay Buffer (tuỳ chọn): Lưu lại các trajectory để huấn luyện nhiều lần (ít phổ biến hơn DQN)
   - Gradient Optimizer: Dùng để cập nhật trọng số (Adam, SGD...)
 + Hình ảnh minh họa
+
+  ![Nhóm 1](GIF1/6/policy.gif)
 
 
 
